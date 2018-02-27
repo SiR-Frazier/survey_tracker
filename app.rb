@@ -31,17 +31,6 @@ get('/surveys/:id/edit') do
   erb(:survey_edit)
 end
 
-post('/surveys/:id/edit') do
-  survey_id = params.fetch(:id).to_i
-  question_name = params.fetch("question_name")
-  answers = params.fetch("answers")
-  Question.create({:question => question_name, :survey_id => survey_id})
-  answers.each do |answer|
-    Answer.create({:answer => answer, :question_id => })
-  end
-  erb(:survey_edit)
-end
-
 patch('/surveys/:id/edit') do
   survey_id = params.fetch(:id).to_i
   survey = params.fetch("survey")
@@ -90,5 +79,29 @@ delete('/surveys/:id/delete') do
   questions.each do |q|
     q.delete()
   end
+  @surveys = Survey.all()
   erb(:home)
+end
+
+delete('/questions/:id/delete') do
+  question_id = params.fetch(:id).to_i
+  question = Question.find(question_id)
+  question.delete()
+  answers = Answer.where(:question_id => question_id)
+  answers.each do |a|
+    a.delete()
+  end
+  @surveys = Survey.all()
+  erb(:home)
+end
+
+delete('/answers/:id/delete') do
+  answer_id = params.fetch(:id).to_i
+  answer = Answer.find(answer_id)
+  answer.delete()
+  question = Question.where(:id => answer.question_id)
+  survey_id = question.survey_id
+  @survey = Survey.find(survey_id)
+  @questions = Question.where(:survey_id => survey_id)
+  erb(:survey_edit)
 end
