@@ -1,0 +1,17 @@
+<h1><%= @survey.title() %></h1>
+
+
+<form action="/division/<%= @division.id() %>/employee" method="post">
+  <input id="division_id" name="division_id" type="hidden" value="<%= @division_id %>">
+  <label for="name">Employee Name</label>
+  <input id="name" name="name" type="text">
+
+  <button type="submit">Add Question</button>
+</form>
+
+<p>
+<form action="/survey/<%= @survey.id() %>" method="post">
+  <input name="_method" type="hidden" value="delete">
+  <button type="submit">Delete this survey</button>
+</form>
+</p>
