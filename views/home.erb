@@ -1,5 +1,48 @@
 <h1>Survey Directory</h1>
 
-<div class="container">
-  <p><a href="/survey/new">Add New Survey</a></p>
-  <p><a href="/surveys">View Previous Surveys</a></p>
+<div class="panel-group">
+<div class="panel">
+  <div class="panel-heading">List of Surveys</div>
+  <div class="panel-body">
+    <table class="table-hover" id="surveys">
+      <thead>
+        <tr>
+          <th>Survey ID</th>
+          <th>Survey Name</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <% @surveys.each do |s| %>
+        <tr>
+          <td>
+            <a href="/surveys/<%= s.id() %>"><%= s.id() %></a>
+          </td>
+          <td>
+            <a href="/surveys/<%= s.id() %>"><%= s.name() %></a>
+          </td>
+          <td>
+            <a href="/surveys/<%= s.id() %>/edit">Edit</a>
+          </td>
+          <td>
+            <form action="/surveys/<%= s.id() %>/delete" method="post">
+              <input name="_method" type="hidden" value="delete">
+              <button type="submit" class="btn">
+                <span class="glyphicon glyphicon-trash"></span> Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+<div class="panel panel-default">
+      <div class="panel-heading">Add a Survey</div>
+      <div class="panel-body">
+        <form action="/" method="post">
+          <input name="survey_name" type="text" placeholder="Name">
+
+          <button class="btn-lg" type="submit">Add Survey</button>
+      </div>
+    </div>

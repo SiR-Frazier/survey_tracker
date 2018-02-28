@@ -1,0 +1,71 @@
+<form action="/surveys/<%= @survey.id()%>/edit" method="post">
+  <input name="_method" type="hidden" value="patch">
+  <div class="form-group">
+    <input name="survey" value="<%= @survey.name %>" class="form-control" type="text">
+  </div>
+  <button class="btn-lg" type="submit">Save name</button>
+</form>
+<div class="panel">
+  <div class="panel-heading">Edit Survey</div>
+  <div class="panel-body">
+    <table class="table-hover" id="questions">
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th>Answers</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <% @questions.each do |question| %>
+        <tr>
+          <td>
+            <form action="/questions/<%= question.id()%>/edit" method="post">
+              <input name="_method" type="hidden" value="patch">
+              <div class="form-group">
+                <input name="question" value="<%= question.question %>" class="form-control" type="text">
+              </div>
+              <button type="submit" class="btn-lg">Save</button>
+            </form>
+          </td>
+          <td>
+            <ul>
+              <% @answers_list = Answer.where({:question_id => question.id}) %>
+              <% @answers_list.each do |answer| %>
+                <li><%= answer.answer %></li>
+              <% end %>
+            </ul>
+            <form action="/questions/<%= question.id()%>/add" method="post">
+              <div class="form-group">
+                <input name="answers" value="e.g.: yes, no, maybe" class="form-control" type="text">
+              </div>
+              <button type="submit" class="btn-lg">Add</button>
+            </form>
+            <form action="/questions/<%= question.id() %>/answers/delete" method="post">
+              <input name="_method" type="hidden" value="delete">
+              <button type="submit" class="btn">
+                <span class="glyphicon glyphicon-trash"></span> Delete
+              </button>
+            </form>
+          </td>
+          <td>
+            <form action="/questions/<%= question.id() %>/delete" method="post">
+              <input name="_method" type="hidden" value="delete">
+              <button type="submit" class="btn">
+                <span class="glyphicon glyphicon-trash"></span> Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+    <% end %>
+  </table>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">Add a Question</div>
+  <div class="panel-body">
+    <form action="/surveys/<%= @survey.id()%>/add" method="post">
+      <input name="question_name" type="text" placeholder="Your question">
+
+      <button class="btn-lg" type="submit">Add Question</button>
+  </div>
+</div>
